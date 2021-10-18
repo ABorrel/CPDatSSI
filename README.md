@@ -117,11 +117,18 @@ Mapp on the document ID:
 - 392400422 #applied to all data sources used in MN DoH chemical screening proof of concept,chemicals measured or identified in environmental media or products,water intended for drinking  or related to drinking water; includes bottled water  finished water from drinking water treatment plants  and untreated water that has been denoted as a drinking source --> Pesticides, Diet
 >**JK: Most pesticides aren't pharma too. And I didn't try to classify from the "chemical residues from drugs or pesticides" list because it's not specific to either**
 - 423446 #Relating to pesticides or pesticide usage. Includes specific types of pesticides  e.g. insecticides   herbicides  fungicides  and fumigants; also includes general biocides,chemical residues  typically from drugs or pesticides --> Pesticides, Pharmaceuticals
+>**JK: things in the next bullet are just pesticides, not pharma**
 - 400423425442446 #chemicals measured or identified in environmental media or products,Relating to pesticides or pesticide usage. Includes specific types of pesticides  e.g. insecticides   herbicides  fungicides  and fumigants; also includes general biocides,general term pertaining to agricultural practices  including the raising and farming of animals and growing of crops,includes fresh  canned and frozen forms  as well as juices and sauces (e.g. applesauce)  excludes forms intended for consumption by young children (i.e. baby foods); includes green beans and peas,chemical residues  typically from drugs or pesticides --> Pesticides, Pharmaceuticals
 - 1372195 #Pharmaceutical Appendix (2019) Table 1 --> Pharmaceuticals
 - 1372197 #Pharmaceutical Appendix (2019) Table 3 --> Pharmaceuticals
 
 
+<<<<<<< HEAD
+=======
+# PUC
+>**JK: unfortunately I don't think all PUC things are consumer... things w/ PUC "kind = O" and "gen_cat = industrial" are both --> industrial types**
+Chemicals with a PUC --> Consumer products
+>>>>>>> 6173398d1062df174777d7eab8afd291f8416bc1
 
 
 
