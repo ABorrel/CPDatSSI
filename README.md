@@ -8,7 +8,6 @@ Folder: /CPDat/CPDatRelease20201216/"
 # Search terms in function description, document id and oecd used 
 
 ## Pesticide
->**JK: I feel like antimicrobial and extermination could potentially be consumer too**
 - pesticide
 - antimicrobial
 - fungicide
@@ -31,31 +30,26 @@ Folder: /CPDat/CPDatRelease20201216/"
 - plasticizer
 - plasticisers
 - catalyst
->**JK: couldn't a UV stabilizer be in consumer products too? Maybe even more likely, since UV isn't likely to be present during industrial manufacturing?**
 - uv stabilizer
 - flame retardant
 - colorants
+- electronics
 
 
 ## Diet
 - food and not for food and Nonfood 
 - beverage
->**JK: I'd say retail is consumer**
-- retail    
 - drinking
->**JK: Preservatives aren't necessarily for foods - e.g., phthalates in plastics**
-- preservative
 - flavouring
-
+- not condition "not for food" and "non-food"
 
 ## Pharmaceuticals
 - drug
 - pharma
->**JK: I don't see sunscreen as a pharma product**
-- sunscreen agent
  
 
-## Consumer products         
+## Consumer products
+> Check OECD defintion        
 - apparel
 - personal care
 - arts crafts
@@ -63,7 +57,7 @@ Folder: /CPDat/CPDatRelease20201216/"
 - child use
 - decor
 - toy
->**JK: I struggled with electronics... I feel like they could be industrial too/instead since the manufacturing process would be the more likely exposure source rather than a consumer opening up the product**
+- antimicrobial
 - electronics
 - lawn garden
 - sports equipment
@@ -74,7 +68,6 @@ Folder: /CPDat/CPDatRelease20201216/"
 - tools
 - dental
 - toothbrush
->**JK: what about industrial cleaners?**
 - clean washing
 - soap
 - automotive care
@@ -84,16 +77,24 @@ Folder: /CPDat/CPDatRelease20201216/"
 - shampoo
 - cosmetic
 - perfuming
->**JK: couldn't flame retardant be industrial too?**
 - flame retardant 
 - parfume
 - skin conditioning
 - sunscreen agent
->**JK: why is coal tar under consumer? Probably industrial**
 - coal tar
 - colorants
+- uv stabilizer
 
 
+# HHE
+All chemicals in HHE => industrial
+
+# PUC
+Chemicals with a PUC --> Consumer products
+- All of PUC in consumer products
+- in addition map O kind to industrial
+
+# not use the document mapping
 # Document id mapping
 Mapp on the document ID:
 - 1373515 #Air Water INC Fine Chemicals List --> Industrial
@@ -121,8 +122,9 @@ Mapp on the document ID:
 - 1372197 #Pharmaceutical Appendix (2019) Table 3 --> Pharmaceuticals
 
 
-# PUC
-Chemicals with a PUC --> Consumer products
 
 
 
+
+# Need to do
+Map on the dtxsid and remap on casrn
