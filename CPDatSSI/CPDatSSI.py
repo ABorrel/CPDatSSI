@@ -1,9 +1,9 @@
 from numpy.lib.npyio import load
-import toolbox
+from . import toolbox
 from re import search
 
 
-class CPDat:
+class CPDatSSI:
     def __init__(self, pr_database="/mnt/d/database/CPDat/CPDatRelease20201216/", version="20201216"):
 
         self.pr_database = pr_database
@@ -509,10 +509,3 @@ class CPDat:
         filout.close()
 
 
-## testing
-pr_database = "/mnt/d/database/CPDat/CPDatRelease20201216/"
-c_CPDAT = CPDat(pr_database)
-c_CPDAT.comparisonBoardExposureWithCardona2021("/mnt/c/Users/AlexandreBorrel/research/SSI/e2up_p4up/results/ClassCPDAT_E2up/board_exposure.csv", "/mnt/c/Users/AlexandreBorrel/research/SSI/e2up_p4up/data/E2up_CPDAT_Cardona2021.csv", "/mnt/c/Users/AlexandreBorrel/research/SSI/e2up_p4up/results/ClassCPDAT_E2up/")
-#c_CPDAT.loadMapping()
-#out = c_CPDAT.casrnToFunctions("7235-40-7")
-#print(out)
