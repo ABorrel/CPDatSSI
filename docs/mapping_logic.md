@@ -1,5 +1,5 @@
 # Mapping chemicals on CPDAT fields
-## Function description, and oecd used 
+## Function description, oecd used and list presence 
 ### Pesticide
 - pesticide
 - antimicrobial
@@ -14,27 +14,35 @@
 - NACE
 - coal tar
 - raw material
-- industrial manufacturing
-- industrial fluid
-- mining
+- ~~industrial manufacturing~~ (nothing found)
+- ~~industrial fluid~~ (nothing found)
+- battery fluid
+- silicon fluid
+- silicone fluid
+- mining (with space before to avoid examining)
 - manufacturing
-- ressource extraction
-- rubber processing
+- ~~ressource extraction~~ (nothing found)
+- rubber
 - plasticizer
 - plasticisers
 - catalyst
 - uv stabilizer
 - flame retardant
-- colorants
-- electronics
+- colorant
+- electronic
 
+### Environemental
+- ~~air~~ (not enough specific for function)
+- agricul (for agriculture or agricultural)
+- emissions
+- soil
+- water and not
 
 ### Diet
 - food and not for food and Nonfood 
 - beverage
 - drinking
 - flavouring
-- not condition "not for food" and "non-food"
 
 ### Pharmaceuticals
 - drug
@@ -53,18 +61,21 @@
 - toy
 - antimicrobial
 - electronics
-- lawn garden
+- ~~lawn garden~~ (nothing found)
+- " garden " (avoid gardenia) 
 - sports equipment
-- baby use
-- pet
-- dogs
-- cats
-- tools
+- ~~baby use~~
+- " baby " (avoid thinkbaby)
+- " pet " or " pets "
+- " dogs "
+- " cats "
+- " tools"
 - dental
 - toothbrush
-- clean washing
+- ~~clean washing~~ (nothing found)
 - soap
-- automotive care
+- ~~automotive care~~ (nothing found)
+- automotive
 - hair dyeing
 - skin-care
 - hair conditioning
@@ -76,11 +87,68 @@
 - skin conditioning
 - sunscreen agent
 - coal tar
-- colorants
+- colorant
 - uv stabilizer
 
+## List presence 
+## Pesticide
+- pesticide
+- ~~applied (validated term "applied" as pesticides by comparing to lists_n_docs that contains more info)~~
 
-## HHE
+## Diet
+- animal_products
+- baby_food
+- CEDI (FDA daily intake of food contact substances)
+- EAFUS (substances added to food)
+- dairy
+- drinking_water
+- food_additive
+- fruits
+- general_foods
+- grain
+- legumes
+- nuts
+- tobacco
+- supplements (supplements includes pre/probiotics and vitamins - should this be pharma too?)
+- food contact
+
+### Consumer products
+- arts
+- cotton
+- cleaning product
+- consumer
+- furniture
+- furnishing
+- electronics
+- personal care
+- vehicle
+- toys
+- Substances in (from canadian lists of chemicals in products)
+- IFRA (list of fragrances in consumer goods)
+- children (is defined as intended for use by children)
+- plastic_additive
+
+### Industrial
+- construction
+- home maintenance
+- yard
+- plastic_additive
+- fossil_fuels
+- fracking
+- manufacturing
+
+### Pharmaceutical
+- pharmaceutical
+
+### Environement
+- air
+- agri
+- emissions
+- soil
+- water but no drinking water
+
+
+## Health Hazard Evaluation (HHE)
 All chemicals in HHE => industrial
 
 ## PUC

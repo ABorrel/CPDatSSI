@@ -1,7 +1,7 @@
 from numpy.lib.npyio import load
 from . import toolbox
 from re import search
-from os import path
+from os import CLD_CONTINUED, path
 
 
 class CPDatSSI:
@@ -39,12 +39,19 @@ class CPDatSSI:
         self.d_PUC_map_chemical = {}
         for d_doc_PUC in l_doc_PUC:
             PUC_id = d_doc_PUC["puc_id"]
-            try: self.d_PUC_map_chemical[d_doc_PUC["chemical_id"]]
+            kind_ID = self.d_PUC[PUC_id]["kind"]
+            try: 
+                self.d_PUC_map_chemical[d_doc_PUC["chemical_id"]]
             except:
-                self.d_PUC_map_chemical[d_doc_PUC["chemical_id"]] = []
+                self.d_PUC_map_chemical[d_doc_PUC["chemical_id"]] = {}
+                self.d_PUC_map_chemical[d_doc_PUC["chemical_id"]]["l_PUC_id"] = []
+                self.d_PUC_map_chemical[d_doc_PUC["chemical_id"]]["kind"] = []
+                
+            if not PUC_id in self.d_PUC_map_chemical[d_doc_PUC["chemical_id"]]["l_PUC_id"] :
+                self.d_PUC_map_chemical[d_doc_PUC["chemical_id"]]["l_PUC_id"].append(PUC_id)
 
-            if not PUC_id in self.d_PUC_map_chemical[d_doc_PUC["chemical_id"]] :
-                self.d_PUC_map_chemical[d_doc_PUC["chemical_id"]].append(PUC_id)
+            if not kind_ID in self.d_PUC_map_chemical[d_doc_PUC["chemical_id"]]["kind"] :
+                self.d_PUC_map_chemical[d_doc_PUC["chemical_id"]]["kind"].append(PUC_id)
 
         # functionnal used        
         l_d_functionnal_used = toolbox.loadMatrixToList(self.p_fuctional_use_dict, sep = ",")
@@ -187,8 +194,8 @@ class CPDatSSI:
             self.d_casrn_mapped[casrn]["funcuse"] = ",".join(self.d_casrn_mapped[casrn]["funcuse"])
             self.d_casrn_mapped[casrn]["oecd_function"] = ",".join(self.d_casrn_mapped[casrn]["oecd_function"])
             
-            l_funct_from_funcuse = self.searchBoardExposureInString(self.d_casrn_mapped[casrn]["funcuse"])
-            l_funct_from_oecd = self.searchBoardExposureInString(self.d_casrn_mapped[casrn]["oecd_function"])
+            l_funct_from_funcuse = self.searchBoardExposureInFuncUseAndOECDFunc(self.d_casrn_mapped[casrn]["funcuse"])
+            l_funct_from_oecd = self.searchBoardExposureInFuncUseAndOECDFunc(self.d_casrn_mapped[casrn]["oecd_function"])
 
             l_presence = []
             l_def_presence = []
@@ -201,10 +208,12 @@ class CPDatSSI:
             #PUC -- when PUC add in Consumer products
             for chemical_id in self.d_casrn_mapped[casrn]["l_chem_id"]:
                 try:
-                    l_PUC = self.d_PUC_map_chemical[chemical_id]
-                    l_PUC_exp.append("Consumer products")
+                    self.d_PUC_map_chemical[chemical_id]
                 except:
-                    pass
+                    continue
+                l_PUC_exp.append("Consumer products")
+                if "O" in self.d_PUC_map_chemical[chemical_id]["kind"]:
+                    l_PUC_exp.append("Industrial")
 
             # presence ID
             for presence_id in self.d_casrn_mapped[casrn]["l_presence_id"]:
@@ -213,31 +222,22 @@ class CPDatSSI:
                 l_presence.append(self.d_list_presence[presence_id]["name"])
                 l_def_presence.append(self.d_list_presence[presence_id]["definition"])
 
-            # document
-            for document_id in self.d_casrn_mapped[casrn]["l_document_id"]:
-                if document_id == "NA":
-                    continue
-                l_doc_title.append(self.d_document_by_id[document_id]["title"])
-                l_doc_exp = l_doc_exp + self.mapDocumentToBoardExp(document_id)
-
             # remove duplication
             l_presence = list(set(l_presence))
             l_def_presence = list(set(l_def_presence))
-            l_doc_title = list(set(l_def_presence))
 
-            l_funct_from_presence_name = self.searchBoardExposureInString(",".join(l_presence))
-            l_funct_from_presence_def = self.searchBoardExposureInString(",".join(l_def_presence))
-            l_funct_from_doc = self.searchBoardExposureInString(",".join(l_doc_title))
+            l_funct_from_presence_name = self.searchBoardExposureInPresenceList(",".join(l_presence))
+            l_funct_from_presence_def = self.searchBoardExposureInPresenceList(",".join(l_def_presence))
 
             # add in the d-out dictionnary
-            d_out[casrn] = d_out[casrn] + l_funct_from_funcuse + l_funct_from_oecd + l_funct_from_presence_name + l_funct_from_presence_def + l_funct_from_doc + l_doc_exp + l_cas_exp + l_PUC_exp
+            d_out[casrn] = d_out[casrn] + l_funct_from_funcuse + l_funct_from_oecd + l_funct_from_presence_name + l_funct_from_presence_def + l_doc_exp + l_cas_exp + l_PUC_exp
             d_out[casrn] = list(set(d_out[casrn]))
 
             if d_out[casrn] == []:
                 d_out[casrn] = ["No data"]
 
             if p_filout != "":
-                filout.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(casrn, "-".join(self.d_casrn_mapped[casrn]["l_chem_id"]), "-".join(l_funct_from_funcuse), "-".join(l_funct_from_oecd), "-".join(l_funct_from_presence_name), "-".join(l_funct_from_presence_def), "-".join(l_funct_from_doc), "-".join(d_out[casrn])))
+                filout.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(casrn, "-".join(self.d_casrn_mapped[casrn]["l_chem_id"]), "-".join(l_funct_from_funcuse), "-".join(l_funct_from_oecd), "-".join(l_funct_from_presence_name), "-".join(l_funct_from_presence_def), "-".join(d_out[casrn])))
 
 
         if p_filout != "":
@@ -246,10 +246,82 @@ class CPDatSSI:
 
         self.d_board_exp = d_out
         return d_out
-                               
-    def searchBoardExposureInString(self, str_in):
+
+    def searchBoardExposureInPresenceList(self, str_in):
         l_funct = []
         str_in = str_in.lower()
+        #Pesticide
+        if search("pesticide", str_in):
+            l_funct.append("Pesticides")
+
+        #Diet
+        if search("animal_products", str_in):
+            l_funct.append("Diet")
+        if search("baby_food", str_in):
+            l_funct.append("Diet")
+        if search("CEDI", str_in):
+            l_funct.append("Diet")
+        if search("EAFUS", str_in):
+            l_funct.append("Diet")
+        if search("dairy", str_in):
+            l_funct.append("Diet")
+        if search("drinking_water", str_in):
+            l_funct.append("Diet")            
+        if search("food_additive", str_in):
+            l_funct.append("Diet")
+        if search("fruits", str_in):
+            l_funct.append("Diet")
+        if search("general_foods", str_in):
+            l_funct.append("Diet")
+        if search("grain", str_in):
+            l_funct.append("Diet")
+        if search("legumes", str_in):
+            l_funct.append("Diet")
+        if search("nuts", str_in):
+            l_funct.append("Diet")
+        if search("tobacco", str_in):
+            l_funct.append("Diet")
+        if search("supplements", str_in):
+            l_funct.append("Diet")
+        if search("food contact", str_in):
+            l_funct.append("Diet")
+
+        #Consumer products
+        if search("arts", str_in):
+            l_funct.append("Consumer products")
+        if search("cotton", str_in):
+            l_funct.append("Consumer products")
+        if search("cleaning product", str_in):
+            l_funct.append("Consumer products")
+        if search("consumer", str_in):
+            l_funct.append("Consumer products")
+        if search("furniture", str_in):
+            l_funct.append("Consumer products")
+        if search("furnishing", str_in):
+            l_funct.append("Consumer products")
+        if search("electronics", str_in):
+            l_funct.append("Consumer products")
+        if search("personal care", str_in):
+            l_funct.append("Consumer products")
+        if search("vehicle", str_in):
+            l_funct.append("Consumer products")
+        if search("toys", str_in):
+            l_funct.append("Consumer products")
+        if search("Substances in", str_in):
+            l_funct.append("Consumer products")
+        if search("IFRA", str_in):
+            l_funct.append("Consumer products")
+        if search("children", str_in):
+            l_funct.append("Consumer products")
+        if search("children", str_in):
+            l_funct.append("Consumer products")
+
+        return list(set(l_funct))
+
+    def searchBoardExposureInFuncUseAndOECDFunc(self, str_in):
+        l_funct = []
+        str_in = str_in.lower()
+        #Pesticide
         if search("pesticide", str_in):
             l_funct.append("Pesticides")
         if search("antimicrobial", str_in):
@@ -265,31 +337,30 @@ class CPDatSSI:
         if search("insecticide", str_in):
             l_funct.append("Pesticides")
 
-
+        #Industrial
         if search("industrial", str_in): 
             l_funct.append("Industrial")
         if search("NACE", str_in):
             l_funct.append("Industrial")
         if search("coal tar", str_in):
             l_funct.append("Industrial")  
-            
-        if search("raw_material", str_in):
+        if search("raw material", str_in):
             l_funct.append("Industrial")
-        if search("industrial_manufacturing", str_in):
+        if search("battery fluid", str_in):
             l_funct.append("Industrial")
-        if search("industrial_fluid", str_in):
+        if search("silicon fluid", str_in):
             l_funct.append("Industrial")
-        if search("mining", str_in):
+        if search("silicone fluid", str_in):
+            l_funct.append("Industrial")
+        if search(" mining", str_in):
             l_funct.append("Industrial")
         if search("manufacturing", str_in):
             l_funct.append("Industrial")
-        if search("resource_extraction", str_in):
-            l_funct.append("Industrial")
-        if search("rubber_processing", str_in):
+        if search("rubber", str_in):
             l_funct.append("Industrial")
         if search("plasticizer", str_in):
             l_funct.append("Industrial")
-        if search("plasticisers", str_in):
+        if search("plasticiser", str_in):
             l_funct.append("Industrial")
         if search("catalyst", str_in):
             l_funct.append("Industrial")
@@ -297,70 +368,80 @@ class CPDatSSI:
             l_funct.append("Industrial")        
         if search("flame retardant", str_in):
             l_funct.append("Industrial")
-        if search("colorants", str_in):
+        if search("colorant", str_in):
             l_funct.append("Industrial") 
+        if search("electronic", str_in):
+            l_funct.append("Industrial")
 
+        #environmental
+        if search("agricul", str_in):
+            l_funct.append("Environmental")
+        if search("emissions", str_in):
+            l_funct.append("Environmental")
+        if search("soil", str_in):
+            l_funct.append("Environmental")
+        if search("water", str_in) and not search("drinking", str_in):
+            l_funct.append("Environmental")
+        
+        # diet
         if search("food", str_in) and not search("not for food", str_in) and not search("Nonfood", str_in):
             l_funct.append("Diet")
         if search("beverage", str_in):
             l_funct.append("Diet")
-        if search("Retail", str_in):
-            l_funct.append("Diet")
         if search("drinking", str_in):
-            l_funct.append("Diet")
-        if search("preservative", str_in):
             l_funct.append("Diet")
         if search("flavouring", str_in):
             l_funct.append("Diet")
-            
+        
+        #Pharmaceutical
         if search("drug", str_in):
             l_funct.append("Pharmaceuticals")
         if search("pharma", str_in):
             l_funct.append("Pharmaceuticals")
-        if search("sunscreen agent", str_in):
-            l_funct.append("Pharmaceuticals")
 
 
-
+        #Consumer products
         if search("apparel", str_in):
             l_funct.append("Consumer products")
-        if search("personal_care", str_in):
+        if search("personal care", str_in):
             l_funct.append("Consumer products")
-        if search("arts_crafts", str_in):
+        if search("arts craft", str_in):
             l_funct.append("Consumer products")
         if search("furniture", str_in): 
             l_funct.append("Consumer products")
-        if search("child_use", str_in):
+        if search("child use", str_in):
             l_funct.append("Consumer products")
         if search("decor", str_in):
             l_funct.append("Consumer products")
         if search("toy", str_in):
             l_funct.append("Consumer products")
-        if search("electronics", str_in):
+        if search("antimicrobial", str_in):
             l_funct.append("Consumer products")
-        if search("lawn_garden", str_in):
+        if search("electronic", str_in):
             l_funct.append("Consumer products")
-        if search("sports_equipment", str_in):
+        if search(" garden ", str_in):
             l_funct.append("Consumer products")
-        if search("baby_use", str_in):
+        if search("sports equipment", str_in):
             l_funct.append("Consumer products")
-        if search("pet", str_in):
+        if search(" baby ", str_in):
             l_funct.append("Consumer products")
-        if search("dogs", str_in):
+        if search(" pet ", str_in):
             l_funct.append("Consumer products")
-        if search("cats", str_in):
+        if search(" pets ", str_in):
+            l_funct.append("Consumer products")    
+        if search(" dogs ", str_in):
             l_funct.append("Consumer products")
-        if search("tools", str_in):
+        if search(" cats ", str_in):
+            l_funct.append("Consumer products")
+        if search(" tools", str_in):
             l_funct.append("Consumer products")
         if search("dental", str_in):
             l_funct.append("Consumer products")
         if search("toothbrush", str_in):
             l_funct.append("Consumer products")
-        if search("cleaning_washing", str_in):
-            l_funct.append("Consumer products")
         if search("soap", str_in):
             l_funct.append("Consumer products")
-        if search("automotive_care", str_in):
+        if search("automotive", str_in):
             l_funct.append("Consumer products")
         if search("hair dyeing", str_in):
             l_funct.append("Consumer products")
@@ -386,9 +467,8 @@ class CPDatSSI:
             l_funct.append("Consumer products")
         if search("coal tar", str_in):
             l_funct.append("Consumer products") 
-        if search("colorants", str_in):
+        if search("colorant", str_in):
             l_funct.append("Consumer products") 
-
 
         return list(set(l_funct))
 
