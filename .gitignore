@@ -1,5 +1,5 @@
 .pypi
 **/__pycache__/**
-**/CompDesc.egg-info/**
+**/CPDatSSI.egg-info/**
 **/build/**
 **/dist/**

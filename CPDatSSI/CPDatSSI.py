@@ -1,6 +1,7 @@
 from numpy.lib.npyio import load
 from . import toolbox
 from re import search
+from os import path
 
 
 class CPDatSSI:
@@ -22,6 +23,10 @@ class CPDatSSI:
         self.p_fuctional_use_dict = pr_database + "functional_use_dictionary_" + self.version + ".csv" 
 
     def loadMapping(self):
+
+        # check if folder exist
+        if not path.isdir(self.pr_database):
+            print("Folder included the CPDAT is not existing\tPlease define the variable 'pr_database'")
 
         self.d_chem_mapping = toolbox.loadMatrix(self.p_chem_dict, sep = ",")
 

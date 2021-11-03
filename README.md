@@ -7,9 +7,15 @@ CPDAT (version="20201216") exposure mapping <br>
 Folder: /CPDat/CPDatRelease20201216/"
 
 # Installation
+### Package available: 
+> https://test.pypi.org/project/CPDatSSI/ 
+### Installation command line: 
+> $pip install -i https://test.pypi.org/simple/ CPDatSSI
+
+
 
 # GitHub
-https://github.com/SilentSpringInstitute/CPDatSSI
+> https://github.com/SilentSpringInstitute/CPDatSSI
 
 
 # Project updates
@@ -20,6 +26,7 @@ https://github.com/SilentSpringInstitute/CPDatSSI
 - Map on the dtxsid and remap on casrn
 
 # Development command line
-$python -m unittest tests/testMapping.py #unit test on Chemical class <br>
+> $python -m unittest tests/testMapping.py #unit test on Chemical class <br>
 $python setup.py sdist bdist_wheel <br>
 $python -m twine upload --repository testpypi dist/* #upload on testpypi and precise the version<br>
+
