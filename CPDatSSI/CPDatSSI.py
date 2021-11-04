@@ -1,7 +1,7 @@
 from numpy.lib.npyio import load
 from . import toolbox
 from re import search
-from os import CLD_CONTINUED, path
+from os import path
 
 
 class CPDatSSI:
@@ -181,13 +181,13 @@ class CPDatSSI:
             
         if p_filout != "":
             filout = open(p_filout, "w")
-            filout.write("CASRN\tchemical_id\tfunction_used\toecd\tpresence_name\tpresence_definition\tdocument_title\tclass_combine\n")
+            filout.write("CASRN\tchemical_id\tfunction_used\toecd\tpresence_name\tpresence_definition\tclass_combine\n")
 
         for casrn in self.d_casrn_mapped.keys():
             d_out[casrn] = []
             if self.d_casrn_mapped[casrn]["l_chem_id"] == []:
                 if p_filout != "":
-                    filout.write("%s\tNA\tNA\tNA\tNA\tNA\tNA\tNo data\n"%(casrn))
+                    filout.write("%s\tNA\tNA\tNA\tNA\tNA\tNo data\n"%(casrn))
                 continue
             
             # define as a string

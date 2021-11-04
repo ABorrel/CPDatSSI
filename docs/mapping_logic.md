@@ -1,5 +1,5 @@
 # Mapping chemicals on CPDAT fields
-## Function description, oecd used and list presence 
+## Function description and oecd used
 ### Pesticide
 - pesticide
 - antimicrobial

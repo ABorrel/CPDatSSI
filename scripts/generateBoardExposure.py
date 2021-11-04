@@ -15,6 +15,7 @@ def help():
     
     examples:
       
+            # Generate the mapping in output
             {script_name} -i list_casrn.txt -o output.csv -d /CPDat/CPDatRelease20201216/
             
         Read list of chemicals, load the CPDat dataset and map on a board exposure. 
