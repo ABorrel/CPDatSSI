@@ -6,7 +6,7 @@
 - fungicide
 - extermination
 - herbicide
-- herbicdisinfectantide
+- ~~herbicdisinfectantide~~ (nothing found)
 - insecticide
 
 ### Industrial

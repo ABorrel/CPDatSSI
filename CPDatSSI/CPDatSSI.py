@@ -332,8 +332,6 @@ class CPDatSSI:
             l_funct.append("Pesticides")
         if search("herbicide", str_in):
             l_funct.append("Pesticides")
-        if search("herbicdisinfectantide", str_in):
-            l_funct.append("Pesticides")
         if search("insecticide", str_in):
             l_funct.append("Pesticides")
 
