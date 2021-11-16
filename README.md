@@ -14,7 +14,15 @@ This package is mapping any chemicals on the CPDAT database.
 
 # Run CPDatSSI
 ## In Python
-> import CPDatSSI
+> import CPDatSSI<br>
+> pr_database = "< your path to the database >/CPDatRelease20201216/"<br>
+> l_CASRN = ["106-50-3", "128-95-0", "2243-62-1", "112-38-9", "82-44-0", "2110-18-1"] # exemple of input<br>
+> c_CPDAT = CPDatSSI.CPDatSSI(pr_database)<br>
+> c_CPDAT.loadMapping()<br>
+> c_CPDAT.listCasToFunct(l_CASRN)<br>
+> out = c_CPDAT.extractBoardExposure()<br>
+> print(out)<br>
+
 
 ## Script 
 In the scripts folder in GitHub you can find a script to run CPDat in bash or powershell terminal.
