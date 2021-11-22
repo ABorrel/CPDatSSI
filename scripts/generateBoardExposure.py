@@ -107,11 +107,11 @@ def main(argv):
    
    # load database
    c_cpdat = CPDatSSI.CPDatSSI(pr_database=databasefolder)
-   try:c_cpdat.loadMapping()
-   except:
-      print("Error - database folder inexisting or nor complete")
-      help()
-      return
+   c_cpdat.loadMapping()
+   #except:
+   #   print("Error - database folder inexisting or nor complete")
+   #   help()
+   #   return
 
    if tempfile == True:
       p_temp = path.dirname(outputfile) + "/tmp.csv"

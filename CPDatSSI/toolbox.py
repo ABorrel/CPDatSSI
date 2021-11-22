@@ -31,9 +31,11 @@ def loadMatrixToList(pmatrixIn, sep = "\t"):
         lvalues = lineMat.split(sep)
         j = 0
         if len(lvalues) != len(lheaders):
-            print("ERROR - line: ", i)
-            print(lvalues)
-            print(lheaders)
+            #print("ERROR - line: ", i)
+            #print(lvalues)
+            #print(lheaders)
+            i = i + 1
+            continue
         jmax = len(lheaders)
         dtemp = {}
         while j < jmax:
@@ -77,12 +79,14 @@ def loadMatrix(pmatrixIn, sep = "\t"):
         lineMat = formatLine(llinesMat[i])
         lvalues = lineMat.split(sep)
         kin = lvalues[0]
-        dout[kin] = {}
         j = 0
         if len(lvalues) != len(lheaders):
-            print("ERROR - line: ", i)
-            print(lvalues)
-            print(lheaders)
+            #print("ERROR - line: ", i)
+            #print(lvalues)
+            #print(lheaders)
+            i = i + 1
+            continue
+        dout[kin] = {}
         jmax = len(lheaders)
         while j < jmax:
             try:dout[kin][lheaders[j]] = lvalues[j]

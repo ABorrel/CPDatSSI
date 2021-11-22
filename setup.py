@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="CPDatSSI", # Replace with your own username
-    version="0.2beta",
+    version="0.3beta",
     author="Alexandre Borrel",
     author_email="borrel@silentspring.org",
     description="Package to map chemicals on the CPDat database v.2020-12-16",
