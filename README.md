@@ -70,4 +70,5 @@ Download CPDAT:
 > python -m unittest tests/testMapping.py #unit test on Chemical class <br>
 > python setup.py sdist bdist_wheel <br>
 > python -m twine upload --repository testpypi dist/* #upload on testpypi and precise the version<br>
-
+> pip uninstall CPDatSSI<br>
+> pip install -i https://test.pypi.org/simple/ CPDatSSI
