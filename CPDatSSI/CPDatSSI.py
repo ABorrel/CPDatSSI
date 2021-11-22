@@ -164,7 +164,7 @@ class CPDatSSI:
         # main output
         if p_filout != "":
             filout = open(p_filout, "w")
-            filout.write("CASRN\tchemical_id\tfunction_used\toecd\tpresence_name\tpresence_definition\tclass_combine\n")
+            filout.write("CASRN\tchemical_id\tfunction_used\toecd\tpresence_name\tpresence_definition\tPUC\tclass_combine\n")
 
         # temporary file
         if p_temp != "":
@@ -175,12 +175,12 @@ class CPDatSSI:
             d_out[casrn] = []
             if self.d_casrn_mapped[casrn]["l_chem_id"] == []:
                 if p_filout != "":
-                    filout.write("%s\tNA\tNA\tNA\tNA\tNA\tNo data\n"%(casrn))
+                    filout.write("%s\tNA\tNA\tNA\tNA\tNA\tNA\tNo data\n"%(casrn))
                 continue
             
             # define as a string
-            self.d_casrn_mapped[casrn]["funcuse"] = ",".join(self.d_casrn_mapped[casrn]["funcuse"])
-            self.d_casrn_mapped[casrn]["oecd_function"] = ",".join(self.d_casrn_mapped[casrn]["oecd_function"])
+            self.d_casrn_mapped[casrn]["funcuse"] = "----".join(self.d_casrn_mapped[casrn]["funcuse"])
+            self.d_casrn_mapped[casrn]["oecd_function"] = "----".join(self.d_casrn_mapped[casrn]["oecd_function"])
             
             l_funct_from_funcuse = self.searchBoardExposureInFuncUseAndOECDFunc(self.d_casrn_mapped[casrn]["funcuse"])
             l_funct_from_oecd = self.searchBoardExposureInFuncUseAndOECDFunc(self.d_casrn_mapped[casrn]["oecd_function"])
@@ -206,6 +206,7 @@ class CPDatSSI:
 
             # remove duplicate PUC
             l_PUC = list(set(l_PUC))
+            l_PUC_exp = list(set(l_PUC_exp))
 
             # presence ID
             for presence_id in self.d_casrn_mapped[casrn]["l_presence_id"]:
@@ -229,10 +230,10 @@ class CPDatSSI:
                 d_out[casrn] = ["No data"]
 
             if p_filout != "":
-                filout.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(casrn, "-".join(self.d_casrn_mapped[casrn]["l_chem_id"]), "-".join(l_funct_from_funcuse), "-".join(l_funct_from_oecd), "-".join(l_funct_from_presence_name), "-".join(l_funct_from_presence_def), "-".join(d_out[casrn])))
+                filout.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(casrn, "-".join(self.d_casrn_mapped[casrn]["l_chem_id"]), "+".join(l_funct_from_funcuse), "+".join(l_funct_from_oecd), "+".join(l_funct_from_presence_name), "+".join(l_funct_from_presence_def), "+".join(l_PUC_exp), "+".join(d_out[casrn])))
 
             if p_temp != "":
-                ftemp.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(casrn,"-".join(self.d_casrn_mapped[casrn]["l_chem_id"]), self.d_casrn_mapped[casrn]["funcuse"], self.d_casrn_mapped[casrn]["oecd_function"], "-".join(self.d_casrn_mapped[casrn]["l_presence_id"]), "-".join(l_presence), ",".join(l_def_presence), "-".join(l_PUC)))
+                ftemp.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(casrn,"----".join(self.d_casrn_mapped[casrn]["l_chem_id"]), self.d_casrn_mapped[casrn]["funcuse"], self.d_casrn_mapped[casrn]["oecd_function"], "----".join(self.d_casrn_mapped[casrn]["l_presence_id"]), "----".join(l_presence), "----".join(l_def_presence), "----".join(l_PUC)))
 
         if p_filout != "":
             filout.close()
