@@ -7,11 +7,12 @@ class TestMapping(unittest.TestCase):
     def test_broadexposure(self):
 
         pr_database = "/mnt/d/database/CPDat/CPDatRelease20201216/"
-        l_CASRN = ["106-50-3", "128-95-0", "2243-62-1", "112-38-9", "82-44-0", "2110-18-1"]
+        #l_CASRN = ["106-50-3", "128-95-0", "2243-62-1", "112-38-9", "82-44-0", "2110-18-1", "100-42-5"]
+        l_CASRN = ["100-42-5"]
         self.c_CPDAT = CPDatSSI.CPDatSSI(pr_database)
         self.c_CPDAT.loadMapping()
         self.c_CPDAT.listCasToFunct(l_CASRN)
-        out = self.c_CPDAT.extractBoardExposure()
+        out = self.c_CPDAT.extractBoardExposure("./tests/test.csv", "./tests/test_tmp.csv")
         print(out)
 
     """

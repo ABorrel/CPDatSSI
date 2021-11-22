@@ -113,12 +113,11 @@ def main(argv):
       help()
       return
 
+   c_cpdat.listCasToFunct(l_casrn)
+   
    if tempfile == True:
-      p_temp = path.dirname(outputfile) + "/tmp.csv"
-      c_cpdat.listCasToFunct(l_casrn, p_temp)
-   else:
-      c_cpdat.listCasToFunct(l_casrn)
-   c_cpdat.extractBoardExposure(outputfile)
+      p_temp = path.dirname(outputfile) + "./tmp.csv"
+      c_cpdat.extractBoardExposure(outputfile, p_temp)
 
 
 

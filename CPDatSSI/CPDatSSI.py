@@ -51,7 +51,7 @@ class CPDatSSI:
                 self.d_PUC_map_chemical[d_doc_PUC["chemical_id"]]["l_PUC_id"].append(PUC_id)
 
             if not kind_ID in self.d_PUC_map_chemical[d_doc_PUC["chemical_id"]]["kind"] :
-                self.d_PUC_map_chemical[d_doc_PUC["chemical_id"]]["kind"].append(PUC_id)
+                self.d_PUC_map_chemical[d_doc_PUC["chemical_id"]]["kind"].append(kind_ID)
 
         # functionnal used        
         l_d_functionnal_used = toolbox.loadMatrixToList(self.p_fuctional_use_dict, sep = ",")
@@ -108,11 +108,13 @@ class CPDatSSI:
         """
         # find the chem_id
         try:l_chem_id = self.d_cas_mapping[casrn]
-        except: return {"l_chem_id":[], "funcuse":[], "oecd_function":[], "l_presence_id":[], "l_document_id":[]}
+        except: 
+            return {"l_chem_id":[], "funcuse":[], "oecd_function":[], "l_presence_id":[], "l_document_id":[]}
 
         d_out = {"l_chem_id":[],"funcuse":[], "oecd_function":[], "l_presence_id":[], "l_document_id":[]}
         for chem_id in l_chem_id:
             d_out["l_chem_id"].append(chem_id)
+            
             try: l_funuse = self.d_functional_used[chem_id]["report_funcuse"]
             except: l_funuse = []
             try:l_oecd = self.d_functional_used[chem_id]["oecd_function"]
@@ -122,8 +124,8 @@ class CPDatSSI:
             try: l_document_id = self.d_presence_map[chem_id]["l_document_id"]
             except: l_document_id = []
 
-            d_out["l_presence_id"] = l_presence_id
-            d_out["l_document_id"] = l_document_id
+            d_out["l_presence_id"] = d_out["l_presence_id"] + l_presence_id
+            d_out["l_document_id"] = d_out["l_document_id"] + l_document_id
 
             for funuse in l_funuse:
                 if not funuse.lower() in d_out["funcuse"]:
@@ -135,7 +137,7 @@ class CPDatSSI:
 
         return d_out
 
-    def listCasToFunct(self, l_casrn, p_filout = ""):
+    def listCasToFunct(self, l_casrn):
         """
         Build a dictionnary with the CASRN as key and value from the cpdat
         """
@@ -145,30 +147,10 @@ class CPDatSSI:
             d_exposure = self.casrnToFunctions(CASRN)
             d_out[CASRN] = d_exposure
 
-        if p_filout != "":
-            filout = open(p_filout, "w")
-            filout.write("CASRN\tl_chem_id\tUse\toecd\tlist_presence_id\tlist_presence_def\tlist_document_id\tlist_document\n")
-            for casn in d_out.keys():
-                
-                # search presence in list
-                l_def_list = []
-                for id_presence in d_out[casn]["l_presence_id"]:
-                    if id_presence == "NA": ## need to check it is inside
-                        continue
-                    else:
-                        l_def_list.append(self.d_list_presence[id_presence]["definition"])
-                
-                l_doc_list = []
-                for id_doc in d_out[casn]["l_document_id"]:
-                    l_doc_list.append(self.d_document_by_id[id_doc]["title"])
-
-                filout.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(casn, ",".join(d_out[casn]["l_chem_id"]), ",".join(d_out[casn]["funcuse"]), ",".join(d_out[casn]["oecd_function"]),  ",".join(d_out[casn]["l_presence_id"]), ",".join(l_def_list), ",".join(d_out[casn]["l_document_id"]), ",".join(l_doc_list)))
-            filout.close()
-        
         self.d_casrn_mapped = d_out
         return d_out
 
-    def extractBoardExposure(self, p_filout = ""):
+    def extractBoardExposure(self, p_filout = "", p_temp = ""):
         """
         From Cardona 2021 script
         List of function [Pesticides, Industrial, Consumer products, Diet, Pharmaceuticals, No data]
@@ -179,9 +161,15 @@ class CPDatSSI:
             print("== Load CPDAT first with the list of CASRN ==")
             return 
             
+        # main output
         if p_filout != "":
             filout = open(p_filout, "w")
             filout.write("CASRN\tchemical_id\tfunction_used\toecd\tpresence_name\tpresence_definition\tclass_combine\n")
+
+        # temporary file
+        if p_temp != "":
+            ftemp = open(p_temp, "w")
+            ftemp.write("CASRN\tl_chem_id\tUsed\toecd\tl_presence_id\tl_presence_name\tl_presence_def\tl_PUC\n")
 
         for casrn in self.d_casrn_mapped.keys():
             d_out[casrn] = []
@@ -203,7 +191,7 @@ class CPDatSSI:
             l_doc_exp = []
             l_cas_exp = self.individualMappingOnBoardExp(casrn)
             l_PUC_exp = []
-
+            l_PUC = []
 
             #PUC -- when PUC add in Consumer products
             for chemical_id in self.d_casrn_mapped[casrn]["l_chem_id"]:
@@ -212,8 +200,12 @@ class CPDatSSI:
                 except:
                     continue
                 l_PUC_exp.append("Consumer products")
+                l_PUC = l_PUC + self.d_PUC_map_chemical[chemical_id]["kind"]
                 if "O" in self.d_PUC_map_chemical[chemical_id]["kind"]:
                     l_PUC_exp.append("Industrial")
+
+            # remove duplicate PUC
+            l_PUC = list(set(l_PUC))
 
             # presence ID
             for presence_id in self.d_casrn_mapped[casrn]["l_presence_id"]:
@@ -239,11 +231,15 @@ class CPDatSSI:
             if p_filout != "":
                 filout.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(casrn, "-".join(self.d_casrn_mapped[casrn]["l_chem_id"]), "-".join(l_funct_from_funcuse), "-".join(l_funct_from_oecd), "-".join(l_funct_from_presence_name), "-".join(l_funct_from_presence_def), "-".join(d_out[casrn])))
 
+            if p_temp != "":
+                ftemp.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(casrn,"-".join(self.d_casrn_mapped[casrn]["l_chem_id"]), self.d_casrn_mapped[casrn]["funcuse"], self.d_casrn_mapped[casrn]["oecd_function"], "-".join(self.d_casrn_mapped[casrn]["l_presence_id"]), "-".join(l_presence), ",".join(l_def_presence), "-".join(l_PUC)))
 
         if p_filout != "":
             filout.close()
 
-
+        if p_temp != "":
+            ftemp.close()
+        
         self.d_board_exp = d_out
         return d_out
 
@@ -315,6 +311,36 @@ class CPDatSSI:
             l_funct.append("Consumer products")
         if search("children", str_in):
             l_funct.append("Consumer products")
+
+        ### Industrial
+        if search("construction", str_in):
+            l_funct.append("Industrial")
+        if search("home maintenance", str_in):
+            l_funct.append("Industrial")
+        if search("yard", str_in):
+            l_funct.append("Industrial")
+        if search("plastic additive", str_in):
+            l_funct.append("Industrial")
+        if search("fossil fuel", str_in):
+            l_funct.append("Industrial")
+        if search("fracking", str_in):
+            l_funct.append("Industrial")   
+        if search("manufacturing", str_in):
+            l_funct.append("Industrial")
+            
+        ### pharmaceutical
+        if search("pharmaceutical", str_in):
+            l_funct.append("Pharmaceutical")
+            
+        ### Environmental
+        if search(" air ", str_in):
+            l_funct.append("Environmental")
+        if search(" agri ", str_in):
+            l_funct.append("Environmental")
+        if search("soil", str_in):
+            l_funct.append("Environmental")
+        if search("water", str_in) and not search("drinking", str_in):
+            l_funct.append("Environmental")    
 
         return list(set(l_funct))
 
