@@ -1,5 +1,19 @@
-# CPDatSSI
-This package is mapping any chemicals on the CPDAT database. 
+# CPDatSSI (V1.x)
+This package is mapping any chemicals (from their CASRN) on the CPDAT database and provide a board exposure categorization. <br>
+<i><b>Version 1 (11/23/2021)</i></b>
+
+# Description
+This package developed in python will allow to map any chemicals from their CASRN to an exposure board class using CPDAT database. <br>
+Seven classes of board exposure are used:
+- Pesticide: include pesticide or derivative chemicals
+- Industrial: include produces found in industrial process
+- Environemental: include exposure from environment, contaminated water, soil or air exposures
+- Diet: include exposure chemicals found in the diet
+- Food contact: exposure from food contamination
+- Pharmaceuticals: include pharmaceutical chemicals or drugs-like molecules
+- Consumer products: include chemicals in consumer products
+
+The mapping uses string terms in the different parts of the database. The all list of search terms is reported in the docs/ folder in the sources.
 
 # Installation
 ## Dependancy
@@ -13,7 +27,7 @@ This package is mapping any chemicals on the CPDAT database.
 <br>
 
 # Run CPDatSSI
-## In Python
+## In Python - example of run
 > import CPDatSSI<br>
 > pr_database = "< your path to the database >/CPDatRelease20201216/"<br>
 > l_CASRN = ["106-50-3", "128-95-0", "2243-62-1", "112-38-9", "82-44-0", "2110-18-1"] # exemple of input<br>
@@ -58,11 +72,12 @@ Download CPDAT:
 # Project updates
 - 10-12-21: init git
 - 11-01-21: transform curent script to package available in pip
+- 11-23-21: 
 
 <br>
 
-# TODO list
-- Map on the dtxsid and remap on casrn
+# TODO list for futur version
+- Map on DTXSID
 
 <br>
 

@@ -8,7 +8,7 @@ class TestMapping(unittest.TestCase):
 
         pr_database = "/mnt/d/database/CPDat/CPDatRelease20201216/"
         #l_CASRN = ["106-50-3", "128-95-0", "2243-62-1", "112-38-9", "82-44-0", "2110-18-1", "100-42-5"]
-        l_CASRN = ["100-42-5"]
+        l_CASRN = ["107-06-2", "106-91-2", "121-75-5"]
         self.c_CPDAT = CPDatSSI.CPDatSSI(pr_database)
         self.c_CPDAT.loadMapping()
         self.c_CPDAT.listCasToFunct(l_CASRN)

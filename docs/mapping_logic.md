@@ -44,6 +44,9 @@
 - drinking
 - flavouring
 
+### Food contact
+- food contact
+
 ### Pharmaceuticals
 - drug
 - pharma
@@ -110,6 +113,9 @@
 - nuts
 - tobacco
 - supplements (supplements includes pre/probiotics and vitamins - should this be pharma too?)
+
+
+### Food contact
 - food contact
 
 ### Consumer products
@@ -142,7 +148,7 @@
 
 ### Environement
 - air
-- agri
+- agricul
 - emissions
 - soil
 - water but no drinking water

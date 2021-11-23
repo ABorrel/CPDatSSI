@@ -9,19 +9,19 @@ script_name = path.basename(__file__)
 def help():
    
    help_to_print = f'''
-    {script_name} -i input file -o output file -d database folder path [-t temporary file of mapping]
+    python {script_name} -i input file -o output file -d database folder path [-t temporary file of mapping]
     
     Read a list of chemicals in casrn format and write a csv file output with the board exposure
     
     examples:
       
             # Generate the mapping in output
-            {script_name} -i list_casrn.txt -o output.csv -d /CPDat/CPDatRelease20201216/
+            python {script_name} -i list_casrn.txt -o output.csv -d /CPDat/CPDatRelease20201216/
             
         Read list of chemicals, load the CPDat dataset and map on a board exposure. 
        
             # Generate temporary file of the CPDat mapping
-            {script_name} -i list_casrn.txt -o output.csv -d /CPDat/CPDatRelease20201216/ -t
+            python {script_name} -i list_casrn.txt -o output.csv -d /CPDat/CPDatRelease20201216/ -t
             
     -i input_file
         Path of the input file in txt format, one casrn by line
@@ -65,7 +65,7 @@ def main(argv):
    try:
       opts, args = getopt.getopt(argv,"hvti:o:d:",["ifile=","ofile=","database=", "tempfile=","verbose="])
    except getopt.GetoptError:
-      print ('wrapper.py -i <inputfile> -o <outputfile> -d <databasefolder>')
+      print ('python {script_name} -i <inputfile> -o <outputfile> -d <databasefolder>')
       sys.exit(2)
    for opt, arg in opts:
       if opt == '-h':
@@ -96,7 +96,7 @@ def main(argv):
 
    # first open file and generate list of casrn
    if not path.exists(inputfile):
-      print("Error - input file is not existing")
+      print("Error - input file does not exist")
       help()
       return
    
@@ -109,7 +109,7 @@ def main(argv):
    c_cpdat = CPDatSSI.CPDatSSI(pr_database=databasefolder)
    try:c_cpdat.loadMapping()
    except:
-      print("Error - database folder inexisting or nor complete")
+      print("Error - database folder inexisting or not complete")
       help()
       return
 

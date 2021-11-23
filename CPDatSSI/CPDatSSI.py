@@ -280,9 +280,11 @@ class CPDatSSI:
             l_funct.append("Diet")
         if search("supplements", str_in):
             l_funct.append("Diet")
-        if search("food contact", str_in):
-            l_funct.append("Diet")
 
+        #Food contact
+        if search("food contact", str_in):
+            l_funct.append("Food contact")
+        
         #Consumer products
         if search("arts", str_in):
             l_funct.append("Consumer products")
@@ -334,13 +336,17 @@ class CPDatSSI:
             l_funct.append("Pharmaceutical")
             
         ### Environmental
+        if str_in == "air":
+           l_funct.append("Environmental") 
         if search(" air ", str_in):
             l_funct.append("Environmental")
-        if search(" agri ", str_in):
+        if search("agricul", str_in):
             l_funct.append("Environmental")
         if search("soil", str_in):
             l_funct.append("Environmental")
         if search("water", str_in) and not search("drinking", str_in):
+            l_funct.append("Environmental")
+        if search("emission", str_in):
             l_funct.append("Environmental")    
 
         return list(set(l_funct))
@@ -401,12 +407,13 @@ class CPDatSSI:
         #environmental
         if search("agricul", str_in):
             l_funct.append("Environmental")
-        if search("emissions", str_in):
+        if search("emission", str_in):
             l_funct.append("Environmental")
         if search("soil", str_in):
             l_funct.append("Environmental")
         if search("water", str_in) and not search("drinking", str_in):
             l_funct.append("Environmental")
+        
         
         # diet
         if search("food", str_in) and not search("not for food", str_in) and not search("Nonfood", str_in):
@@ -417,6 +424,10 @@ class CPDatSSI:
             l_funct.append("Diet")
         if search("flavouring", str_in):
             l_funct.append("Diet")
+        
+        #Food contact
+        if search("food contact", str_in):
+            l_funct.append("Food contact")
         
         #Pharmaceutical
         if search("drug", str_in):
