@@ -280,10 +280,8 @@ class CPDatSSI:
             l_funct.append("Diet")
         if search("supplements", str_in):
             l_funct.append("Diet")
-
-        #Food contact
         if search("food contact", str_in):
-            l_funct.append("Food contact")
+            l_funct.append("Diet")
         
         #Consumer products
         if search("arts", str_in):
@@ -314,6 +312,8 @@ class CPDatSSI:
             l_funct.append("Consumer products")
         if search("children", str_in):
             l_funct.append("Consumer products")
+        if search("food contact", str_in):
+            l_funct.append("Consumer products")
 
         ### Industrial
         if search("construction", str_in):
@@ -333,7 +333,7 @@ class CPDatSSI:
             
         ### pharmaceutical
         if search("pharmaceutical", str_in):
-            l_funct.append("Pharmaceutical")
+            l_funct.append("Pharmaceuticals")
             
         ### Environmental
         if str_in == "air":
@@ -424,10 +424,8 @@ class CPDatSSI:
             l_funct.append("Diet")
         if search("flavouring", str_in):
             l_funct.append("Diet")
-        
-        #Food contact
         if search("food contact", str_in):
-            l_funct.append("Food contact")
+            l_funct.append("Diet")
         
         #Pharmaceutical
         if search("drug", str_in):
@@ -505,6 +503,8 @@ class CPDatSSI:
             l_funct.append("Consumer products") 
         if search("colorant", str_in):
             l_funct.append("Consumer products") 
+        if search("food contact", str_in):
+            l_funct.append("Consumer products")
 
         return list(set(l_funct))
 

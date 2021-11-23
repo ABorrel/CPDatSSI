@@ -1,6 +1,6 @@
 # CPDatSSI (V1.x)
 This package is mapping any chemicals (from their CASRN) on the CPDAT database and provide a board exposure categorization. <br>
-<i><b>Version 1 (11/23/2021)</i></b>
+<i><b>Current Version 1.01 (11/23/2021)</i></b>
 
 # Description
 This package developed in python will allow to map any chemicals from their CASRN to an exposure board class using CPDAT database. <br>
@@ -9,7 +9,6 @@ Seven classes of board exposure are used:
 - Industrial: include produces found in industrial process
 - Environemental: include exposure from environment, contaminated water, soil or air exposures
 - Diet: include exposure chemicals found in the diet
-- Food contact: exposure from food contamination
 - Pharmaceuticals: include pharmaceutical chemicals or drugs-like molecules
 - Consumer products: include chemicals in consumer products
 
@@ -72,8 +71,10 @@ Download CPDAT:
 # Project updates
 - 10-12-21: init git
 - 11-01-21: transform curent script to package available in pip
-- 11-23-21: 
+- 11-23-21: publish the version 1.0
 
+# Version update
+- v1.01: match search term "food contact" to Diet and Consumer Product and remove food contact categorie. Correct pharmaceuticals categorie name
 <br>
 
 # TODO list for futur version
