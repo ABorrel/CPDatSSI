@@ -87,11 +87,16 @@ def main(argv):
       help()
       return
 
+   if tempfile == True:
+      p_temp = "./tmp.csv"
+
    if verbose == True:
       print('Input file is "', inputfile)
       print('Output file is "', outputfile)
       print('Database folder is ', databasefolder)
       print('Temporary file ?', tempfile)
+      if tempfile == True:
+         print('Temporary file is ', p_temp)
       print()
 
    # first open file and generate list of casrn
@@ -116,7 +121,6 @@ def main(argv):
    c_cpdat.listCasToFunct(l_casrn)
    
    if tempfile == True:
-      p_temp = path.dirname(outputfile) + "./tmp.csv"
       c_cpdat.extractBoardExposure(outputfile, p_temp)
 
 
